@@ -1,5 +1,26 @@
 {% extends "index.html" %}
 
 {% block content %}
-    main
+    <div class="container">
+    <div class="table-responsive">
+    <h3 class="mt-5 text-center">
+
+    <table class="table table-bordered table-striped table-sm">
+
+    <thead>
+        <th class="display-3"> 최근 많이 본 기사</th>
+    </thead>
+    <tbody>
+    {% for key, value in news.items %}         <! -- for tag 시작 -->
+        <tr>
+            <td><a href = "https://{{ value }}", target = "_blank">{{ key }} </a></td>
+        </tr>
+        {% endfor %}                          <! -- for tag 종료 -->
+    </tbody>
+
+    </table>
+</h3>
+</div>
+    </div>
+
 {% endblock %}

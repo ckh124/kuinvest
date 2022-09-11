@@ -1,10 +1,19 @@
-
-.a{
-        font-family: 'Black Han Sans', sans-serif;
-        font-size : 48px;
-}
 body{
     background-color : skyblue;
+    height : 100%;
+
+}
+
+nav{
     font-family: 'Black Han Sans', sans-serif;
-    font-size : 48px;
+    font-size : 24px;
+}
+
+div{
+
+}
+table{
+    font-family: 'Black Han Sans', sans-serif;
+    font-size : 16px;
+
 }

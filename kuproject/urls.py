@@ -27,4 +27,8 @@ urlpatterns = [
     path('order.html/', kuproject.views.order, name='order'),
     path('profit.html/',kuproject.views.profit, name='profit'),
     path('stockindex.html/', kuproject.views.stockindex, name='stockindex'),
+    path('input.html/',kuproject.views.SCinput, name='SCinput'),
+    path('test1.html/',kuproject.views.test1,name= 'test1'),
+    path('test2.html/', kuproject.views.test2, name='test2'),
+    path('test3.html/', kuproject.views.test3, name='test3'),
 ]

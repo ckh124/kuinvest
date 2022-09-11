@@ -1,5 +1,74 @@
 {% extends "index.html" %}
 
 {% block content %}
-stockindex
+
+          <p class="fs-1 text-center"><b>지수 차트</b></p><br>
+
+
+                <div class="picture-container">
+                    <mark class="fs-2 bg-transparent mt-3 text-center"><b>※ 코스피</b></mark>
+                    <div id="kospi" class="d-flex flex-column mt-3">
+                        <table id="kospi-table" class="table table-dark table-hover table-striped table-bordered border-light align-middle">
+                            <tbody>
+                              <tr>
+                                <td>지수</td>
+                                {% if Kospi_f.1.0 == "+" %}
+                                  <td style="color:orangered;">{{Kospi_scham}}</td>
+                                {% elif Kospi_f.1.0 == "-" %}
+                                  <td style="color:dodgerblue;">{{Kospi_scham}}</td>
+                                {% else %}
+                                  <td>{{Kospi_scham}}</td>
+                                {% endif %}
+                              </tr>
+                              <tr>
+                                <td>등락</td>
+                                {% if Kospi_f.1.0 == "+" %}
+                                  <td style="color:orangered;">{{Kospi_f.0}}({{Kospi_f.1}})</td>
+                                {% elif Kospi_f.1.0 == "-" %}
+                                  <td style="color:dodgerblue;">{{Kospi_f.0}}({{Kospi_f.1}})</td>
+                                {% else %}
+                                  <td>{{Kospi_f.0}}({{Kospi_f.1}})</td>
+                                {% endif %}
+                              </tr>
+                            </tbody>
+                        </table>
+                        <img class="border border-2" src="{{Kospi_chart_url}}">
+                        <b class ="text-center">({{Kospi_trading.0}}, {{Kospi_trading.1}}, {{Kospi_trading.2}})</b>
+                    </div>
+                </div>
+                <div class="picture-container ms-4">
+                    <mark class="fs-2 bg-transparent text-center"><b>※ 코스닥</b></mark>
+                    <div id="kosdaq" class="d-flex flex-column mt-3">
+                        <table id="kosdaq-table" class="table table-dark table-hover table-striped table-bordered border-light align-middle">
+                            <tbody>
+                              <tr>
+                                <td>지수</td>
+                                {% if Kosdaq_f.1.0 == "+" %}
+                                  <td style="color:orangered;">{{Kosdaq_scham}}</td>
+                                {% elif Kosdaq_f.1.0 == "-" %}
+                                  <td style="color:dodgerblue;">{{Kosdaq_scham}}</td>
+                                {% else %}
+                                  <td>{{Kosdaq_scham}}</td>
+                                {% endif %}
+                              </tr>
+                              <tr>
+                                <td>등락</td>
+                                {% if Kosdaq_f.1.0 == "+" %}
+                                  <td style="color:orangered;">{{Kosdaq_f.0}}({{Kosdaq_f.1}})</td>
+                                {% elif Kosdaq_f.1.0 == "-" %}
+                                  <td style="color:dodgerblue;">{{Kosdaq_f.0}}({{Kosdaq_f.1}})</td>
+                                {% else %}
+                                  <td>{{Kosdaq_f.0}}({{Kosdaq_f.1}})</td>
+                                {% endif %}
+                              </tr>
+                            </tbody>
+                        </table>
+                        <img class="border border-2" src="{{Kosdaq_chart_url}}">
+                        <b class ="text-center">({{Kosdaq_trading.0}}, {{Kosdaq_trading.1}}, {{Kosdaq_trading.2}})</b>
+                    </div>
+                </div>
+            </div>
+
+
+
 {% endblock %}
