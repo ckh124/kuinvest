@@ -22,23 +22,13 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="{% url 'mystock' %}">보유 종목</a>
-        </li>
+
         <li class="nav-item">
           <a class="nav-link" href="{% url 'favorite' %}">관심그룹</a>
         </li>
-
         <li class="nav-item">
           <a class="nav-link" href ="{% url 'nowstock' %}">주식현재가</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'order' %}">주식주문</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'profit' %}" >잔고/손익</a>
-        </li>
-
         <li class="nav-item">
           <a class="nav-link" href="{% url 'stockindex' %}" >지수/환율</a>
         </li>
