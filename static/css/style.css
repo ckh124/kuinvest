@@ -1,19 +1,29 @@
 body{
-    background-color : skyblue;
+    background-color : aliceblue;
     height : 100%;
+    font-family: 'Noto Sans KR', sans-serif;
 
 }
 
 nav{
-    font-family: 'Black Han Sans', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     font-size : 24px;
 }
 
-div{
+div {
+    border-radius: 5%;
 
 }
+
 table{
-    font-family: 'Black Han Sans', sans-serif;
-    font-size : 16px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size : 12px;
+    border-radius: 5%;
+    background: white;
+
+}
+b{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size : 20px;
 
 }

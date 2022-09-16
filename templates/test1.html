@@ -1,16 +1,26 @@
 {% extends "index.html" %}
 
 {% block content %}
-    <form action="#" method="post">
-        {% csrf_token %}
-        <input type="text" name="user_input">
-        <button>go</button>
-    </form>
-    <div>
+{#    <form action="#" method="post">#}
+{#        {% csrf_token %}#}
+{#        <input type="text" name="user_input">#}
+{#        <button>go</button>#}
+{#    </form>#}
+<form class="input-group mb-3">
+  <input type="text" class="form-control" placeholder="종목을 적어주세요" aria-label="Recipient's username" aria-describedby="button-addon2">
+  <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+</form>
+
+{% block content2 %}
 
 
 
-    </div>
+
+
+{% endblock %}
+
+
+
 
 
 {% endblock %}
