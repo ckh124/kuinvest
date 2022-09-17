@@ -91,5 +91,4 @@ def com_search_ajax(request):
     search = json.dumps(  temp.to_dict()  )
     return render(request,'test1.html',{'search' : search,})
 
-
-test
+123123
