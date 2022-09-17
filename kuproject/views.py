@@ -3,15 +3,15 @@ from rest_framework.views import APIView
 
 from kuproject.market import priceindex
 from kuproject.news import newscrawling
-from kuproject.test import com_search_ajax
+from kuproject.chart import chart_data, search_code
+
 from pykrx import stock
 import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 import plotly.graph_objects as go
-import json
 
-def loot(request):
+def get(request):
     return render(request,'index.html')
 
 def main(request):
@@ -36,31 +36,37 @@ def nowstock(request):
     return render(request, 'nowstock.html')
 
 
+
+
 def stockindex(request):
-    return render(request,'stockindex.html')
+    return render(request, 'stockindex.html')
 def test1(request):
-    return render(request,'test1.html')
+    if request.method == "GET":
+        return render(request, 'test1.html')
+
+
+
 def test2(request):
-    return render(request,'test2.html')
+    if request.method == "POST":
+        s_code = search_code(request.POST['user_input'])
+        s_data = chart_data(s_code, None)
+        var = []
+        x = list(s_data['ent_dict']['Date'].values())
+        y = list(s_data['ent_dict']['Close'].values())
+        var = zip(x, y)
+
+        return render(request, 'test2.html', {'ent': s_data['ent'],
+                                              'date': s_data['ent_dict']['Date'],
+                                              'close': s_data['ent_dict']['Close'],
+                                              'eve': s_data['ent_dict']['eve'],
+                                              'rate': s_data['ent_dict']['rate'],
+                                              'color': s_data['ent_dict']['color'],
+                                              'var': var},)
+
 def test3(request):
-    return render(request,'test3.html')
+    return render(request, 'test3.html')
 def test4(request):
-    return render(request,'test4.html')
-
-def com_search_ajax(request):
-
-
-
-    texxxt = request.POST['search_input']
-    print(texxxt)
-
-    #-----------웹에서 입력한 검색어와 관련된 업체만 가져오기 -----------------
-    # +++ 주의! com_df_rm 다시 호출하는 이유 : 검색 시 금융/보험 데이터 제거한 데이터프레임을 불러오기 때문
-    com_df = pd.read_csv("y_finance_stockcode.csv")
-    temp = com_df[(com_df['nm'].str.contains(texxxt)) | (com_df['nm'].str.contains(texxxt.upper()))][['cd', 'nm']].head()
-    print(temp.to_dict())
-    search = json.dumps(  temp.to_dict()  )
-    return render(request,'test1.html',{'search' : search,})
+    return render(request, 'test4.html')
 
 
 
@@ -69,7 +75,4 @@ def login(request):
     return render(request,'login.html')
 def register(request):
     return render(request,'register.html')
-
-
-
 

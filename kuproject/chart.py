@@ -5,7 +5,7 @@ import math
 
 
 def chart_data(ent, select_date=None):
-    ent = ent.split(".")[0]
+    ent = list(ent)[0][1].split(".")[0]
     if (select_date != None):
         ent_df = stock.get_market_ohlcv_by_date(fromdate=select_date[0], todate=select_date[1], ticker=ent)
 
@@ -37,9 +37,11 @@ def chart_data(ent, select_date=None):
 
 def search_code(name):
     str = name
-    com_df_srch = pd.read_csv('../com_df_rm.csv',
+    com_df_srch = pd.read_csv('./kuproject/com_df_rm.csv',
                               dtype={'stock_code': 'str', '표준코드': 'str', '단축코드': 'str', 'stock_code_ori': 'str'},
                               parse_dates=['listed_date', '상장일'])
-    temp = com_df_srch[(com_df_srch['한글 종목명'].str.contains(str)) | (com_df_srch['한글 종목명'].str.contains(str.upper()))][['yh_code', '한글 종목명']].head()
+    temp = com_df_srch[(com_df_srch['한글 종목명'].str.contains(str)) | (com_df_srch['한글 종목명'].str.contains(str.upper()))][['yh_code', '한글 종목명']]
     #print(temp.values.tolist())
-    return (temp.values.tolist())
+    return (temp.to_dict()['yh_code'].items())
+
+
