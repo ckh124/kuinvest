@@ -76,3 +76,19 @@ def login(request):
 def register(request):
     return render(request,'register.html')
 
+def com_search_ajax(request):
+
+
+
+    texxxt = request.POST['search_input']
+    print(texxxt)
+
+    #-----------웹에서 입력한 검색어와 관련된 업체만 가져오기 -----------------
+    # +++ 주의! com_df_rm 다시 호출하는 이유 : 검색 시 금융/보험 데이터 제거한 데이터프레임을 불러오기 때문
+    com_df = pd.read_csv("y_finance_stockcode.csv")
+    temp = com_df[(com_df['nm'].str.contains(texxxt)) | (com_df['nm'].str.contains(texxxt.upper()))][['cd', 'nm']].head()
+    print(temp.to_dict())
+    search = json.dumps(  temp.to_dict()  )
+    return render(request,'test1.html',{'search' : search,})
+
+
