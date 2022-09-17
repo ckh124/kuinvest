@@ -37,7 +37,7 @@ def chart_data(ent, select_date=None):
 
 def search_code(name):
     str = name
-    com_df_srch = pd.read_csv('com_df_rm.csv',
+    com_df_srch = pd.read_csv('../com_df_rm.csv',
                               dtype={'stock_code': 'str', '표준코드': 'str', '단축코드': 'str', 'stock_code_ori': 'str'},
                               parse_dates=['listed_date', '상장일'])
     temp = com_df_srch[(com_df_srch['한글 종목명'].str.contains(str)) | (com_df_srch['한글 종목명'].str.contains(str.upper()))][['yh_code', '한글 종목명']].head()

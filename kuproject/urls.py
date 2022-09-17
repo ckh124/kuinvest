@@ -19,7 +19,7 @@ import kuproject.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', kuproject.views.get, name='index'),
+    path('', kuproject.views.loot, name='index'),
     path('main.html/', kuproject.views.main, name='main'),
     path('nowstock.html/', kuproject.views.nowstock, name='nowstock'),
     path('favorite.html/', kuproject.views.favorite, name='favorite'),
@@ -30,4 +30,6 @@ urlpatterns = [
     path('test4.html/', kuproject.views.test3, name='test4'),
     path('login.html/',kuproject.views.login, name='login'),
     path('register.html/', kuproject.views.register, name='register'),
+    path('com_search_ajax/',kuproject.views.com_search_ajax, name='com_search_ajax')
+
 ]
