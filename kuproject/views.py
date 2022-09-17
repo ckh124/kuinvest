@@ -92,3 +92,4 @@ def com_search_ajax(request):
     return render(request,'test1.html',{'search' : search,})
 
 
+test

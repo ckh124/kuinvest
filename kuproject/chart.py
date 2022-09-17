@@ -44,5 +44,3 @@ def search_code(name):
     #print(temp.values.tolist())
     return (temp.to_dict()['yh_code'].items())
 
-
-asd
