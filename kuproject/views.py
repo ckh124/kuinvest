@@ -62,7 +62,8 @@ def test2(request):
                                               'eve': s_data['ent_dict']['eve'],
                                               'rate': s_data['ent_dict']['rate'],
                                               'color': s_data['ent_dict']['color'],
-                                              'var': var},)
+                                              'var': var,
+                                              'corp_name': request.GET['hidden_corp_name']},)
 
 def test3(request):
     return render(request, 'test3.html')

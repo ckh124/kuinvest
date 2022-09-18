@@ -7,14 +7,14 @@
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales',],
+          ['Year', '종가',],
           {% for val in var %}
               ['{{ val.0 }}', {{ val.1 }}],
             {% endfor %}
         ]);
 
         var options = {
-          title: 'Company Performance',
+          title: '{{ corp_name }}',
           curveType: 'function',
           legend: { position: 'bottom' }
         };
