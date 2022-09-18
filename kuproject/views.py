@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from rest_framework.views import APIView
 
 from kuproject.market import priceindex
@@ -7,6 +7,7 @@ from kuproject.chart import chart_data, search_code
 
 from pykrx import stock
 import pandas as pd
+import json
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 import plotly.graph_objects as go
@@ -47,8 +48,8 @@ def test1(request):
 
 
 def test2(request):
-    if request.method == "POST":
-        s_code = search_code(request.POST['user_input'])
+    if request.method == "GET":
+        s_code = search_code(request.GET['hidden_corp_name'])
         s_data = chart_data(s_code, None)
         var = []
         x = list(s_data['ent_dict']['Date'].values())
@@ -76,19 +77,19 @@ def login(request):
 def register(request):
     return render(request,'register.html')
 
+
 def com_search_ajax(request):
 
+    if request.method =='POST':
+     test = request.POST['search_input']
 
-
-    texxxt = request.POST['search_input']
-    print(texxxt)
 
     #-----------웹에서 입력한 검색어와 관련된 업체만 가져오기 -----------------
     # +++ 주의! com_df_rm 다시 호출하는 이유 : 검색 시 금융/보험 데이터 제거한 데이터프레임을 불러오기 때문
-    com_df = pd.read_csv("y_finance_stockcode.csv")
-    temp = com_df[(com_df['nm'].str.contains(texxxt)) | (com_df['nm'].str.contains(texxxt.upper()))][['cd', 'nm']].head()
-    print(temp.to_dict())
-    search = json.dumps(  temp.to_dict()  )
-    return render(request,'test1.html',{'search' : search,})
+     com_df = pd.read_csv("y_finance_stockcode.csv")
+     temp = com_df[(com_df['nm'].str.contains(test)) | (com_df['nm'].str.contains(test.upper()))][['cd', 'nm']].head()
 
-123123
+     result = json.dumps(  temp.values.tolist()  )
+
+
+     return HttpResponse(result)
