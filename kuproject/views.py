@@ -45,7 +45,9 @@ def test1(request):
     if request.method == "GET":
         return render(request, 'test1.html')
 
+def test3(request):
 
+        return render(request, 'test3.html')
 
 def test2(request):
     if request.method == "GET":
@@ -65,8 +67,7 @@ def test2(request):
                                               'var': var,
                                               'corp_name': request.GET['hidden_corp_name']},)
 
-def test3(request):
-    return render(request, 'test3.html')
+
 def test4(request):
     return render(request, 'test4.html')
 
@@ -88,7 +89,8 @@ def com_search_ajax(request):
     #-----------웹에서 입력한 검색어와 관련된 업체만 가져오기 -----------------
     # +++ 주의! com_df_rm 다시 호출하는 이유 : 검색 시 금융/보험 데이터 제거한 데이터프레임을 불러오기 때문
      com_df = pd.read_csv("y_finance_stockcode.csv")
-     temp = com_df[(com_df['nm'].str.contains(test)) | (com_df['nm'].str.contains(test.upper()))][['cd', 'nm']].head()
+     temp = com_df[(com_df['한글 종목명'].str.contains(test)) | (com_df['한글 종목명'].str.contains(test.upper()))][['cd', '한글 종목명']].head()
+     print(temp)
 
      result = json.dumps(  temp.values.tolist()  )
 

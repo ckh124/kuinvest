@@ -2,5 +2,142 @@
 
 {% block content %}
 
+  <body class="nav-md" id="jamybody">
+    <div class="container body">
+      <div class="main_container" style="margin-left:0px">
+
+        <!-- top navigation -->
+        <div class="top_nav" style="margin-left:0px">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle" style="margin-bottom:0px; padding-top:18px;width: 50px;">
+                <a href="/" id="menu_toggle"><i class="fa fa-home"><h4><b></b></h4></i></a>
+              </div>
+
+              <div class="input-group">
+              <ul class="nav navbar-nav navbar-right" style="margin-top:20px;>
+                <li class="">
+
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+
+
+                  </ul>
+                </li>
+
+
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div id='searchman' class="right_col" role="main" style="margin-left:0px">
+          <!-- top tiles -->
+        <form name="myform" id="myform", action = "{% url "test2" %}">
+
+          <input type="hidden" id="hidden_corp_name" name="hidden_corp_name" value=""></input>
+          <input type="hidden" id="hidden_stock_code" name="hidden_stock_code" value="">
+          <input type="hidden" id="hidden_origin_stock_code" name="hidden_origin_stock_code" value="">
+
+            <div style="text-align : center;margin-top:100px;margin-bottom:40px;">
+            </div>
+              <div class="input-group" style="width:80%;margin-bottom: 0px;margin-left:13%;">
+
+                    <input id="search_input" name="search_input" autocomplete="off" type="text" class="form-control" placeholder="검색어 입력 후 Enter" style="width:100%;height:50px;z-index:4;">
+                    <div id="resdiv" style="position: Absolute;z-index:3;background-color:lightgreen;width:100%;margin-top:50px;"></div>
+
+                  </div>
+
+
+            </form>
+          <div style="margin-bottom:5%"></div>
+        </div>
+        </div>
+{% block content2 %}
+
+
 
 {% endblock %}
+  <!-- jQuery -->
+
+<script>
+
+$(document).on('keyup', '#search_input', function() {
+        //비동기통신해라.....
+        $.ajax({  url: "{% url 'com_search_ajax'%}" ,
+                  type : "post",
+                  data: {"search_input" : $("#search_input").val() } ,
+                  success: function(data) {
+                        console.log(data)
+
+                        flask_return_list  = JSON.parse(data)  //jquery
+                        console.log(flask_return_list);
+
+
+                        html_str = "<table border=1  style='background: lightgreen;border:none;''>"
+                        //-------------------------------------------------
+                        $.each(flask_return_list, function( i, v ) {
+
+                            console.log( v[0] , v[1]);
+                            html_str += "<tr><td><button style='background-color: lightgreen;border:0; outline:0;font-size:20px;' class='ajax_com_name_btn' value="+v[0]+" id="+i+"_name >"+v[1]+"</button></td></tr>"    //script
+                        });
+                        html_str += "</table>"
+                        $( "#resdiv" ).empty();
+                        $( "#resdiv" ).html(html_str);
+
+                   },
+                  error: function(res){
+                                    console.log("fail");
+                  } ,
+                  crossDomain: true
+
+              });
+    });
+
+    $(document).on("click", ".ajax_com_name_btn", function(){
+        $( "#hidden_stock_code" ).attr("value", $(this).val())
+        $( "#hidden_corp_name" ).attr("value", $(this).text())
+        $( "#myform" ).attr("action","/test2")
+        $( "#myform" ).attr("method","get")
+        $( "#myform" ).submit();
+        $( '#searchman' ).empty()
+        html_str = "<div class='loader' style='margin-top:20%;margin-left:45%;'></div><div class='loading' style='margin-left:45%;'><h1 class='lightgreen'><span>L</span><span>O</span><span>A</span><span>D</span><span>I</span><span>N</span><span>G</span></h1></div>"
+        $( '#searchman' ).html(html_str);
+        console.log($(this).val(),$(this).text());
+    });
+
+
+
+    $(document).on("click", '#search_input', function() {
+        //비동기통신해라.....
+        $.ajax({  url: "{% url 'com_search_ajax'%}" ,
+                  type : "post",
+                  data: {"search_input" : $("#search_input").val() } ,
+                  success: function(data) {
+                        console.log(data);
+                        //------------String -- 객체 로 변환 -------------
+                        flask_return_list  = JSON.parse(data)  //jquery
+                        console.log(flask_return_list);
+
+                        html_str = "<table border=1  style='background: lightgreen;border:none;'>"
+                        //-------------------------------------------------
+                        $.each(flask_return_list, function( i, v ) {
+                            //i 0   v ['smith', 1400]
+                            //i 1   v ['allen', 4000]
+                            console.log( v[0] , v[1]);
+                            html_str += "<tr><td><button style='background-color: lightgreen;border:0; outline:0;font-size:20px;' class='ajax_com_name_btn' value="+v[0]+" id="+i+"_name >"+v[1]+"</button></td></tr>"    //script
+                        });
+                        html_str += "</table>"
+                        $( "#resdiv" ).empty();
+                        $( "#resdiv" ).html(html_str);
+                   },
+                  error: function(res){  } ,
+                  crossDomain: true
+
+              });
+    });
+</script>
+
+{% endblock %}
+

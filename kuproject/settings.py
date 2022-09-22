@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'kuproject'
 
 ]
 
@@ -78,7 +79,16 @@ WSGI_APPLICATION = 'kuproject.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
+DATABASES = {
+	'default': {
+    	'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'kuinvest',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '3306',
+     }
+}
 
 
 # Password validation

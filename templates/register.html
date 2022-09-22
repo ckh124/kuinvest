@@ -10,24 +10,23 @@
   <body>
     <section class="login">
       <h1>KU</h1>
-      <form METHOD="post" ACTION="login_check.php">
+      <form METHOD="post" ACTION= "{% url 'register' %}">
+          {% csrf_token %}
         <div class="int-area">
           <input type="text" name="email" id="email" autocomplete="off" required />
-          <label for="id">이메일</label>
+          <label for="email">이메일</label>
         </div>
         <div class="int-area">
           <input type="text" name="id" id="id" autocomplete="off" required />
           <label for="id">아이디</label>
         </div>
         <div class="int-area">
-          <input
-            type="password"
-            name="pw"
-            id="pw"
-            autocomplete="off"
-            required
-          />
+          <input type="password" name="pw" id="pw" autocomplete="off" required />
           <label for="pw">비밀번호</label>
+        </div>
+        <div class="int-area">
+          <input type="password" name="pw2" id="pw2" autocomplete="off" required />
+          <label for="pw2">비밀번호 확인</label>
         </div>
         <div class="btn-area">
           <button id="btn" type="submit">회원가입</button>
