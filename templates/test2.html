@@ -1,4 +1,5 @@
 {% extends "nowstock.html" %}
+
 {% block content2 %}
     <head>
 
@@ -16,9 +17,15 @@
 
         var options = {
           title: '{{ corp_name }}',
+          titlePosition: 'center',
+          colors: ['red'],
+          lineWidth: 4,
           curveType: 'function',
-          legend: { position: 'bottom' },
-            textAlign: 'center'
+          legend: 'none',
+          pointSize: 5,
+
+
+
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));

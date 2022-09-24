@@ -25,5 +25,29 @@ def priceindex():
     Kosdaq_trading = [item.get_text().strip() for item in Kosdaq_trend.select('li')][1:]  # 코스닥 투자자별 매매동향
     return Kospi_chart_url, Kosdaq_chart_url, Kospi_scham, Kosdaq_scham, Kospi_f, Kosdaq_f, Kospi_trading, Kosdaq_trading
 
+def exchange():
+    response = requests.get("https://finance.naver.com/marketindex/")
+    soup = BeautifulSoup(response.content, "html.parser")
+
+    frame = soup.find('iframe', id='frame_ex1')
+    frame_addr = "https://finance.naver.com"+frame['src']
+
+    res = requests.get(frame_addr)
+    frame_soup = BeautifulSoup(res.content, 'html.parser')
+    items = frame_soup.select('body > div > table > tbody > tr')
+
+    n, p = [], []
+    i = 0
+    for item in items:
+        name = item.select('td')[0].text.replace("\n", "")
+        name = name.replace("\t", "")
+        if i == 0 or i == 1 or i == 2 or i == 3 or i == 6:
+            n.append(name)
+            p.append(item.select('td')[1].text)
+        i = i+1
+
+    return n, p
+
+
 
 

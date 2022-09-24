@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from rest_framework.views import APIView
 
-from kuproject.market import priceindex
+from kuproject.market import priceindex, exchange
 from kuproject.news import newscrawling
 from kuproject.chart import chart_data, search_code
 
@@ -18,6 +18,10 @@ def get(request):
 def main(request):
     news = newscrawling()
     (Kospi_chart_url, Kosdaq_chart_url, Kospi_scham, Kosdaq_scham, Kospi_f, Kosdaq_f, Kospi_trading, Kosdaq_trading) = priceindex()
+    ex_name, ex_price = exchange()
+    ex_dict = {}
+    for i in range(5):
+        ex_dict[ex_name[i]] = ex_price[i]
     return render(request,'main.html', {'news' : news,
                                         'Kospi_chart_url' : Kospi_chart_url,
                                         'Kosdaq_chart_url' : Kosdaq_chart_url,
@@ -26,7 +30,8 @@ def main(request):
                                         'Kospi_f' : Kospi_f,
                                         'Kosdaq_f' : Kosdaq_f,
                                         'Kospi_trading' : Kospi_trading,
-                                        'Kosdaq_trading' : Kosdaq_trading})
+                                        'Kosdaq_trading' : Kosdaq_trading,
+                                        'ex_dict' : ex_dict})
 
 
 
