@@ -43,4 +43,3 @@ def search_code(name):
     temp = com_df_srch[(com_df_srch['한글 종목명'].str.contains(str)) | (com_df_srch['한글 종목명'].str.contains(str.upper()))][['yh_code', '한글 종목명']]
     #print(temp.values.tolist())
     return (temp.to_dict()['yh_code'].items())
-

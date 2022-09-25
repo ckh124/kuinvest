@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from kuproject.market import priceindex, exchange
 from kuproject.news import newscrawling
 from kuproject.chart import chart_data, search_code
+from kuproject.ifrs import crawl_ifrs
 
 from pykrx import stock
 import pandas as pd
@@ -50,9 +51,6 @@ def test1(request):
     if request.method == "GET":
         return render(request, 'test1.html')
 
-def test3(request):
-
-        return render(request, 'test3.html')
 
 def test2(request):
     if request.method == "GET":
@@ -62,7 +60,7 @@ def test2(request):
         x = list(s_data['ent_dict']['Date'].values())
         y = list(s_data['ent_dict']['Close'].values())
         var = zip(x, y)
-
+        ifrs = crawl_ifrs(s_code)
         return render(request, 'test2.html', {'ent': s_data['ent'],
                                               'date': s_data['ent_dict']['Date'],
                                               'close': s_data['ent_dict']['Close'],
@@ -70,8 +68,14 @@ def test2(request):
                                               'rate': s_data['ent_dict']['rate'],
                                               'color': s_data['ent_dict']['color'],
                                               'var': var,
-                                              'corp_name': request.GET['hidden_corp_name']},)
+                                              'corp_name': request.GET['hidden_corp_name'],
+                                              'ifrs': ifrs},)
 
+
+
+def test3(request):
+
+        return render(request, 'test3.html', {'ifrs' : ifrs})
 
 def test4(request):
     return render(request, 'test4.html')

@@ -28,6 +28,9 @@ def newscrawling():
             rem.append(items)
     news_title = rem
 
+    news_link = news_link[:-3]
+    news_title = news_title[:-3]
+
     news = dict(zip(news_title, news_link))
 
     return news
