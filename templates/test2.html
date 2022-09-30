@@ -34,6 +34,12 @@
       }
     </script>
     </head>
+    <form method="post" action = "{% url 'test2' %}">
+        {% csrf_token %}
+
+
+        <button name="fav" value onclick="alert('관심 종목에 추가되었습니다.');">
+    </form>
     <div id="curve_chart" style="height: 500px; align-content: center;"></div>
 
     <!--재무제표-->
@@ -45,7 +51,8 @@
 
 
 
-
                   </div>
+    <!---------->
+
 {% endblock %}
 

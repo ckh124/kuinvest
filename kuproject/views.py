@@ -1,10 +1,16 @@
-from django.shortcuts import render, HttpResponse
-from rest_framework.views import APIView
+from django.contrib.auth import authenticate
+from django.shortcuts import render, HttpResponse, redirect
+from requests import auth
+from django.shortcuts import render, redirect
+from django.contrib import auth
+from django.contrib.auth.hashers import make_password, check_password
+
 
 from kuproject.market import priceindex, exchange
 from kuproject.news import newscrawling
 from kuproject.chart import chart_data, search_code
 from kuproject.ifrs import crawl_ifrs
+from kuproject.models import user
 
 from pykrx import stock
 import pandas as pd
@@ -70,12 +76,14 @@ def test2(request):
                                               'var': var,
                                               'corp_name': request.GET['hidden_corp_name'],
                                               'ifrs': ifrs},)
+    #if request.method == "POST":
+
 
 
 
 def test3(request):
 
-        return render(request, 'test3.html', {'ifrs' : ifrs})
+        return render(request, 'test3.html')
 
 def test4(request):
     return render(request, 'test4.html')
@@ -84,9 +92,35 @@ def test4(request):
 
 
 def login(request):
-    return render(request,'login.html')
+    if request.method == "POST":
+        id = request.POST['id']
+        pw = request.POST['pw']
+        context = {}
+        if user.objects.filter(id=id).exists():
+            getUser = user.objects.get(id=id)
+            if check_password(pw, getUser.pw):
+                request.session['u_id'] = id
+                return render(request, 'main.html')
+        else:
+            return render(request, 'login_error.html')
+    else:
+        return render(request, 'login.html')
+
+def logout(request):
+    auth.logout(request)
+    return redirect('login.html')
+
 def register(request):
-    return render(request,'register.html')
+    if request.method == "POST":
+        if user.objects.filter(id=request.POST['id']).exists():  # 아이디 중복 체크
+            return render(request, 'id_error.html')
+        if user.objects.filter(email=request.POST['email']).exists():  # 이메일 중복 체크
+            return render(request, 'email_error.html')
+        if request.POST['pw'] == request.POST['pw2']:
+            member = user.objects.create(
+                id=request.POST['id'], email=request.POST['email'], pw=make_password(request.POST['pw']))
+            return render(request, 'register_ok.html')
+    return render(request, 'register.html')
 
 
 def com_search_ajax(request):

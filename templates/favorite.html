@@ -1,5 +1,28 @@
 {% extends "index.html" %}
 
 {% block content %}
-    favorite
+    <section class="Stocks">
+      <h1>KU</h1>
+      <form METHOD="post" ACTION="{% url 'favorite' %}">
+          {% csrf_token %}
+        <div class="stock-area">
+          <input type="text" name="stockname" id="stockname" autocomplete="off" required />
+          <label for="id">종목이름</label>
+        </div>
+        <div class="amount-area">
+          <input
+            type="int"
+            name="stockamount"
+            id="stockamount"
+            autocomplete="off"
+            required
+          />
+          <label for="pw">구매량</label>
+        </div>
+        <div class="btn-area">
+          <button id="btn" type="submit">등록</button>
+        </div>
+      </form>
+
+    </section>
 {% endblock %}
