@@ -7,9 +7,9 @@ class user(models.Model):
     email = models.EmailField()
 
 
-class favorite(models.Model):
-    id = models.CharField(primary_key=True, max_length=20)
-    code = models.IntegerField()
+class stock_fav(models.Model):
+    user_id = models.CharField(max_length=20)
+    code = models.FloatField()
     name = models.CharField(max_length=45)
     cnt = models.IntegerField()
     price = models.IntegerField()

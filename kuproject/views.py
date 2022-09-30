@@ -10,7 +10,7 @@ from kuproject.market import priceindex, exchange
 from kuproject.news import newscrawling
 from kuproject.chart import chart_data, search_code
 from kuproject.ifrs import crawl_ifrs
-from kuproject.models import user
+from kuproject.models import user, stock_fav
 
 from pykrx import stock
 import pandas as pd
@@ -76,7 +76,15 @@ def test2(request):
                                               'var': var,
                                               'corp_name': request.GET['hidden_corp_name'],
                                               'ifrs': ifrs},)
-    #if request.method == "POST":
+    if request.method == "POST":
+        s_name = request.POST['fav']
+        et = search_code(s_name)
+        s_code = list(et)[0][1].split(".")[0]
+        if stock_fav.objects.filter(code=s_code).exists():
+            return render(request, 'fav_exists.html')
+        stock_fav.objects.create(user_id=request.session['u_id'], code=s_code, name=s_name)
+        return render(request, 'fav_ok.html')
+
 
 
 
@@ -100,7 +108,7 @@ def login(request):
             getUser = user.objects.get(id=id)
             if check_password(pw, getUser.pw):
                 request.session['u_id'] = id
-                return render(request, 'main.html')
+                return main(request)
         else:
             return render(request, 'login_error.html')
     else:
