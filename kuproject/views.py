@@ -1,9 +1,11 @@
+import pymysql
 from django.contrib.auth import authenticate
 from django.shortcuts import render, HttpResponse, redirect
 from requests import auth
 from django.shortcuts import render, redirect
 from django.contrib import auth
 from django.contrib.auth.hashers import make_password, check_password
+from django.db import connection
 
 
 from kuproject.market import priceindex, exchange
@@ -43,7 +45,33 @@ def main(request):
 
 
 def favorite(request):
-    return render(request, 'favorite.html')
+
+    try:
+        cursor = connection.cursor()
+        sql = "SELECT * FROM kuproject_stock_fav"
+        result = cursor.execute(sql)
+        datas = cursor.fetchall()
+
+        connection.commit()
+        connection.close()
+        fav = []
+        for data in datas:
+            ent = search_code(data[2])
+            tmp = chart_data(ent)
+            row = {'id': data[0],
+                   'code': data[1],
+                   'name': data[2],
+                   'cnt': data[3],
+                   'price': data[4],
+                   'close': list(tmp['ent_dict']['Close'].values())[-1]}
+            fav.append(row)
+
+
+    except:
+        connection.rollback()
+        print("Failed connecting DB")
+
+    return render(request, 'favorite.html', {'fav': fav})
 
 def nowstock(request):
     return render(request, 'nowstock.html')

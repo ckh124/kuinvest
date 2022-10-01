@@ -1,28 +1,42 @@
 {% extends "index.html" %}
 
 {% block content %}
-    <section class="Stocks">
-      <h1>KU</h1>
-      <form METHOD="post" ACTION="{% url 'favorite' %}">
-          {% csrf_token %}
-        <div class="stock-area">
-          <input type="text" name="stockname" id="stockname" autocomplete="off" required />
-          <label for="id">종목이름</label>
-        </div>
-        <div class="amount-area">
-          <input
-            type="int"
-            name="stockamount"
-            id="stockamount"
-            autocomplete="off"
-            required
-          />
-          <label for="pw">구매량</label>
-        </div>
-        <div class="btn-area">
-          <button id="btn" type="submit">등록</button>
-        </div>
-      </form>
-
-    </section>
+<body>
+<div>
+    {% if fav %}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <td><B>종목</B></td>
+                <td><B>종가</B></td>
+                <td><B>구매 금액</B></td>
+                <td><B>구매 수량</B></td>
+                <td><B>수익</B></td>
+                <td><B>  </B></td>
+                <td><B>  </B></td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for stock in fav %}
+            <tr>
+                <td>{{ stock.name }}</td>
+                <td>{{ stock.close }}</td>
+                {% if stock.price %}
+                <td>{{ stock.price }}</td>
+                <td>{{ stock.cnt }}</td>
+                <td>수익계산식</td>
+                {% else %}
+                <td><B>  </B></td>
+                <td><B>  </B></td>
+                <td><B>  </B></td>
+                {% endif %}
+                <td> <button>입력</button> </td>
+                <td> <button>삭제</button> </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+</body>
 {% endblock %}
