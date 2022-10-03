@@ -20,6 +20,7 @@ import json
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 import plotly.graph_objects as go
+input_fav = ""
 
 def get(request):
     return render(request,'index.html')
@@ -73,19 +74,22 @@ def favorite(request):
     return render(request, 'favorite.html', {'fav': fav})
 
 def alter(request):
-    if 'stockprice' in request.POST is None:
-        for i in range(0, 1000):
-            if request.POST['fav' + str(i)]:
-                fav = request.POST['fav' + str(i)]
-                break
-            else:
-                continue
+    global input_fav
+    for i in range(0, 1000):
+        if request.POST.get('fav' + str(i)) is None:
+            continue
+        else:
+            input_fav = request.POST.get('fav' + str(i))
+            print(input_fav)
+            break
+
     if 'stockprice' in request.POST:
         price = request.POST['stockprice']
         cnt = request.POST['stockamount']
+        print(price, cnt, request.session['u_id'], input_fav)
         try:
             cursor = connection.cursor()
-            sql = "update kuproject_stock_fav set price = " + price + ", cnt = " + cnt + " where user_id = '" + request.session['u_id'] + "' and name = '" + fav + "';"
+            sql = "update kuproject_stock_fav set price = " + price + ", cnt = " + cnt + " where user_id = '" + request.session['u_id'] + "' and name = '" + input_fav + "';"
             cursor.execute(sql)
 
             connection.commit()

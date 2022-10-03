@@ -1,0 +1,28 @@
+{% extends "index.html" %}
+
+{% block content %}
+    <section class="Stocks">
+      <h1>KU</h1>
+      <form METHOD="post" ACTION="{% url 'alter' %}">
+          {% csrf_token %}
+        <div class="stock-area">
+          <input type="number" name="stockprice" id="stockprice" autocomplete="off" required />
+          <label for="id">구매 금액</label>
+        </div>
+        <div class="amount-area">
+          <input
+            type="number"
+            name="stockamount"
+            id="stockamount"
+            autocomplete="off"
+            required
+          />
+          <label for="pw">구매 수량</label>
+        </div>
+        <div class="btn-area">
+          <button id="btn" type="submit">입력</button>
+        </div>
+      </form>
+
+    </section>
+{% endblock %}
