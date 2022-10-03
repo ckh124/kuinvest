@@ -30,7 +30,10 @@
                 <td><B>  </B></td>
                 <td><B>  </B></td>
                 {% endif %}
-                <td> <button>입력</button> </td>
+            <form method="post" action = "{% url 'alter' %}">
+                {% csrf_token %}
+                <td> <button type="submit" name="fav{{ forloop.counter0 }}" id="fav{{ forloop.counter0 }}" value="{{ stock.name }}">입력</button> </td>
+            </form>
                 <td> <button>삭제</button> </td>
             </tr>
             {% endfor %}

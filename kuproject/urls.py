@@ -31,5 +31,6 @@ urlpatterns = [
     path('login.html/',kuproject.views.login, name='login'),
     path('register.html/', kuproject.views.register, name='register'),
     path('com_search_ajax/',kuproject.views.com_search_ajax, name='com_search_ajax'),
+    path('alter.html', kuproject.views.alter, name='alter'),
 
 ]

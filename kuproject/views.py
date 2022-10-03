@@ -45,7 +45,6 @@ def main(request):
 
 
 def favorite(request):
-
     try:
         cursor = connection.cursor()
         sql = "SELECT * FROM kuproject_stock_fav"
@@ -72,6 +71,36 @@ def favorite(request):
         print("Failed connecting DB")
 
     return render(request, 'favorite.html', {'fav': fav})
+
+def alter(request):
+    if 'stockprice' in request.POST is None:
+        for i in range(0, 1000):
+            if request.POST['fav' + str(i)]:
+                fav = request.POST['fav' + str(i)]
+                break
+            else:
+                continue
+    if 'stockprice' in request.POST:
+        price = request.POST['stockprice']
+        cnt = request.POST['stockamount']
+        try:
+            cursor = connection.cursor()
+            sql = "update kuproject_stock_fav set price = " + price + ", cnt = " + cnt + " where user_id = '" + request.session['u_id'] + "' and name = '" + fav + "';"
+            cursor.execute(sql)
+
+            connection.commit()
+            connection.close()
+            return render(request, 'alter_ok.html')
+
+        except:
+            connection.rollback()
+            print("Failed connecting DB")
+
+    return render(request, 'alter.html')
+
+
+
+
 
 def nowstock(request):
     return render(request, 'nowstock.html')
