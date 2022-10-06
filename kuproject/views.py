@@ -20,7 +20,8 @@ import json
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 import plotly.graph_objects as go
-input_fav = ""
+input_fav_buy = ""
+input_fav_sell = ""
 
 def get(request):
     return render(request,'index.html')
@@ -44,53 +45,111 @@ def main(request):
                                         'ex_dict' : ex_dict})
 
 
-
 def favorite(request):
-    try:
-        cursor = connection.cursor()
-        sql = "SELECT * FROM kuproject_stock_fav"
-        result = cursor.execute(sql)
-        datas = cursor.fetchall()
+    cursor = connection.cursor()
+    sql = "SELECT * FROM kuproject_stock_fav"
+    result = cursor.execute(sql)
+    datas = cursor.fetchall()
 
-        connection.commit()
-        connection.close()
-        fav = []
-        for data in datas:
-            ent = search_code(data[2])
-            tmp = chart_data(ent)
-            row = {'id': data[0],
-                   'code': data[1],
-                   'name': data[2],
-                   'cnt': data[3],
-                   'price': data[4],
-                   'close': list(tmp['ent_dict']['Close'].values())[-1]}
-            fav.append(row)
-
-
-    except:
-        connection.rollback()
-        print("Failed connecting DB")
+    connection.commit()
+    connection.close()
+    fav = []
+    for data in datas:
+        ent = search_code(data[2])
+        tmp = chart_data(ent)
+        profit = None
+        prate = None
+        if data[3] is not None:
+            profit = (int(list(tmp['ent_dict']['Close'].values())[-1]) - data[4]) * data[3]
+            prate = (profit / (data[3] * data[4])) * 100
+        row = {'id': data[0],
+               'code': data[1],
+               'name': data[2],
+               'cnt': data[3],
+               'price': data[4],
+               'close': list(tmp['ent_dict']['Close'].values())[-1],
+               'prof': profit,
+               'rate': prate}
+        fav.append(row)
 
     return render(request, 'favorite.html', {'fav': fav})
 
-def alter(request):
-    global input_fav
-    for i in range(0, 1000):
-        if request.POST.get('fav' + str(i)) is None:
-            continue
-        else:
-            input_fav = request.POST.get('fav' + str(i))
-            print(input_fav)
-            break
 
-    if 'stockprice' in request.POST:
-        price = request.POST['stockprice']
-        cnt = request.POST['stockamount']
-        print(price, cnt, request.session['u_id'], input_fav)
+def alter(request):
+    global input_fav_buy
+    global input_fav_sell
+    for i in range(0, 1000):
+        if request.POST.get('fav' + str(i) + '_buy'):
+            input_fav_buy = request.POST.get('fav' + str(i) + '_buy')
+            input_fav_sell = None
+            break
+        elif request.POST.get('fav' + str(i) + '_sell'):
+            input_fav_sell = request.POST.get('fav' + str(i) + '_sell')
+            input_fav_buy = None
+            break
+        else:
+            continue
+
+    if 'stockprice' in request.POST and input_fav_buy:
+        price = int(request.POST['stockprice'])
+        cnt = int(request.POST['stockamount'])
+        print(price, cnt, request.session['u_id'], input_fav_buy, input_fav_sell)
+
+        cursor = connection.cursor()
+        sql1 = "select price, cnt from kuproject_stock_fav where user_id = '" + request.session['u_id'] + "' and name = '" + input_fav_buy + "';"
+
+        cursor.execute(sql1)
+        data = cursor.fetchall()
+        connection.commit()
+        connection.close()
+
+        oprice = data[0][0]
+        ocnt = data[0][1]
+        print(oprice, ocnt)
+
+        if oprice is None:
+            tprice = price
+            tcnt = cnt
+        else:
+            tprice = (oprice * ocnt + price * cnt) // (ocnt + cnt)
+            tcnt = ocnt + cnt
+
+        print(tprice, tcnt)
+        cursor = connection.cursor()
+        sql2 = "update kuproject_stock_fav set price = " + str(tprice) + ", cnt = " + str(tcnt) + " where user_id = '" + \
+               request.session['u_id'] + "' and name = '" + input_fav_buy + "';"
+        cursor.execute(sql2)
+        cursor.fetchall()
+
+        connection.commit()
+        connection.close()
+        return render(request, 'alter_ok.html')
+
+
+
+
+    if 'stockprice' in request.POST and input_fav_sell:
+        price = int(request.POST['stockprice'])
+        cnt = int(request.POST['stockamount'])
+        print(price, cnt, request.session['u_id'], input_fav_buy, input_fav_sell)
         try:
             cursor = connection.cursor()
-            sql = "update kuproject_stock_fav set price = " + price + ", cnt = " + cnt + " where user_id = '" + request.session['u_id'] + "' and name = '" + input_fav + "';"
-            cursor.execute(sql)
+            sql1 = "select price, cnt from kuproject_stock_fav where user_id = '" + request.session['u_id'] + "' and name = '" + input_fav_sell + "';"
+
+            cursor.execute(sql1)
+            data = cursor.fetchall()
+
+            oprice = data[0][0]
+            ocnt = data[0][1]
+
+            if ocnt < cnt:
+                return render(request, 'alter_error.html')
+            else:
+                tprice = (oprice*ocnt - price*cnt)//(ocnt+cnt)
+                tcnt = ocnt-cnt
+
+            sql2 = "update kuproject_stock_fav set price = " + str(tprice) + ", cnt = " + str(tcnt) + " where user_id = '" + request.session['u_id'] + "' and name = '" + input_fav_sell + "';"
+            cursor.execute(sql2)
 
             connection.commit()
             connection.close()
@@ -100,7 +159,8 @@ def alter(request):
             connection.rollback()
             print("Failed connecting DB")
 
-    return render(request, 'alter.html')
+    return render(request, 'alter.html', {'input_buy': input_fav_buy,
+                                          'input_sell': input_fav_sell})
 
 
 

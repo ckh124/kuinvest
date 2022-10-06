@@ -26,13 +26,13 @@ def crawl_ifrs(s_code):
     ifrs = ifrs.replace(['9,999,999,999', '9,999,999,999.0'], ['-', '-'])
 
     ifrs.rename(columns={'IFRS(연결)': ''}, inplace=True)
-    ifrs = ifrs.to_html(justify="right", index=False, classes="table")
+    ifrs = ifrs.to_html(justify="right", index=False, classes="table table-hover table-responsive bg-transparent")
     ifrs = ifrs.replace('border="1"', 'border="0"')
     pd.options.display.float_format = '{:,.0f}'.format
     ifrs = ifrs.replace('<td>', '<td align="right">')
     ifrs = ifrs.replace('<th>', '<th style="text-align: right;">')
     ifrs = ifrs.replace('halign="left"', 'style="text-align: center;"')
-    ifrs = ifrs.replace('class ="dataframe table"',
-                        'class ="dataframe table" style = "table-layout:fixed;word-break:break-all;"')
+    ifrs = ifrs.replace('class ="table table-hover table-responsive bg-transparent"',
+                        'class ="table table-hover table-responsive bg-transparent"')
 
     return (ifrs)

@@ -2,25 +2,27 @@
 
 {% block content %}
     <section class="Stocks">
-      <h1>KU</h1>
+    {% if input_buy %}
+      <h1>{{ input_buy }}</h1>
+      {% else %}
+      <h1>{{ input_sell }}</h1>
+    {% endif %}
       <form METHOD="post" ACTION="{% url 'alter' %}">
           {% csrf_token %}
         <div class="stock-area">
           <input type="number" name="stockprice" id="stockprice" autocomplete="off" required />
-          <label for="id">구매 금액</label>
+          <label for="id">금액</label>
         </div>
         <div class="amount-area">
-          <input
-            type="number"
-            name="stockamount"
-            id="stockamount"
-            autocomplete="off"
-            required
-          />
-          <label for="pw">구매 수량</label>
+          <input type="number" name="stockamount" id="stockamount" autocomplete="off" required />
+          <label for="pw">수량</label>
         </div>
         <div class="btn-area">
-          <button id="btn" type="submit">입력</button>
+        {% if input_buy %}
+          <button id="btn" type="submit">매수</button>
+          {% else %}
+          <button id="btn" type="submit">매도</button>
+        {% endif %}
         </div>
       </form>
 

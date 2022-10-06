@@ -35,15 +35,24 @@
     </script>
 
     </head>
+       <div class="container">
+    <div class="row">
+        <div class ="mt-1" >
     <form method="post" action = "{% url 'test2' %}">
         {% csrf_token %}
-        <button type="submit" name="fav" id="fav" value="{{ corp_name }}">관심</button>
+        <button class="btn btn-outline-light" style ="font-family: 'Noto Sans KR', sans-serif;font-size : 20px;color:black;background-color:lightgreen;" type="submit" name="fav" id="fav" value="{{ corp_name }}">관심등록</button>
+
     </form>
 
     <div id="curve_chart" style="height: 500px; align-content: center;"></div>
+        </div>
+    </div>
 
     <!--재무제표-->
-    <div class="x_content" id="ifrs_room">
+    <div class="row">
+
+    <div class ="col bg-white text-center mt-1"  id="ifrs_room">
+        <mark class=" bg-transparent mt-1 text-center" style="font-family: 'Noto Sans KR', sans-serif;font-size : 50px;"><b>재무제표</b></mark>
 
 
 
@@ -51,8 +60,10 @@
 
 
 
-                  </div>
-    <!---------->
 
+    <!---------->
+    </div>
+    </div>
+    </div>
 {% endblock %}
 

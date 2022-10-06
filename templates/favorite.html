@@ -9,8 +9,8 @@
             <tr>
                 <td><B>종목</B></td>
                 <td><B>종가</B></td>
-                <td><B>구매 금액</B></td>
-                <td><B>구매 수량</B></td>
+                <td><B>평균 금액</B></td>
+                <td><B>수량</B></td>
                 <td><B>수익</B></td>
                 <td><B>  </B></td>
                 <td><B>  </B></td>
@@ -24,7 +24,11 @@
                 {% if stock.price %}
                 <td>{{ stock.price }}</td>
                 <td>{{ stock.cnt }}</td>
-                <td>수익계산식</td>
+                {% if stock.prof > 0 %}
+                <td  style="color:red;'" >+{{ stock.prof }}원 (+{{ stock.rate }}%)</td>
+                {% elif stock.prof < 0 %}
+                <td  style="color:blue;'" >{{ stock.prof }}원 ({{ stock.rate }}%)</td>
+                {% endif %}
                 {% else %}
                 <td><B>  </B></td>
                 <td><B>  </B></td>
@@ -32,7 +36,8 @@
                 {% endif %}
             <form method="post" action = "{% url 'alter' %}">
                 {% csrf_token %}
-                <td> <button type="submit" name="fav{{ forloop.counter0 }}" id="fav{{ forloop.counter0 }}" value="{{ stock.name }}">입력</button> </td>
+                <td> <button type="submit" name="fav{{ forloop.counter0 }}_buy" id="fav{{ forloop.counter0 }}_buy" value="{{ stock.name }}">매수</button>
+                <button type="submit" name="fav{{ forloop.counter0 }}_sell" id="fav{{ forloop.counter0 }}_sell" value="{{ stock.name }}">매도</button></td>
             </form>
                 <td> <button>삭제</button> </td>
             </tr>

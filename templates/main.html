@@ -3,19 +3,19 @@
 {% block content %}
     <div class="container">
     <div class="row">
-        <div class ="col-md-6 bg-light text-center" >
+        <div class ="col-md-6 bg-white text-center mt-1" >
 
 
 
-    <table class="table table-striped table-borderless table-responsive ">
+    <table class="table table-hover table-responsive bg-transparent">
 
     <thead>
-        <th style=" font-family: 'Noto Sans KR', sans-serif;font-size : 16px;"> 최근 많이 본 기사</th>
+        <th style=" font-family: 'Noto Sans KR', sans-serif;font-size : 25px;"> 최근 많이 본 기사</th>
     </thead>
     <tbody>
     {% for key, value in news.items %}         <! -- for tag 시작 -->
         <tr>
-            <td style><a href = "https://{{ value }}", target = "_blank">{{ key }} </a></td>
+            <td style=" font-family: 'Noto Sans KR', sans-serif;font-size : 16px;" ><a href = "https://{{ value }}" style="text-decoration-line: none;">{{ key }} </a></td>
         </tr>
         {% endfor %}                          <! -- for tag 종료 -->
     </tbody>
@@ -26,12 +26,12 @@
 
 
 
-        <div class="col-md-6 bg-light  d-inline-block">
+        <div class="col-md-6 bg-white  d-inline-block">
 
                 <div class="container">
-                    <mark class=" bg-transparent mt-1 text-center" style="font-family: 'Noto Sans KR', sans-serif;font-size : 50px;"><b>※ 코스피</b></mark>
+                    <mark class=" bg-transparent mt-1 text-center" style="font-family: 'Noto Sans KR', sans-serif;font-size : 60px;"><b>※ 코스피</b></mark>
                     <div id="kospi" class="d-flex flex-column mt-3">
-                        <table id="kospi-table" class="table table-sucess table-hover table-striped table-bordered border-light align-middle">
+                        <table id="kospi-table" class="table table-hover table-striped table-bordered border-light align-middle" style="background-color:lightgreen">
                             <tbody>
                               <tr>
                                 <td>지수</td>
@@ -60,9 +60,9 @@
                     </div>
                 </div>
                 <div class="container">
-                    <mark class="bg-transparent text-center" style="font-family: 'Noto Sans KR', sans-serif;font-size :50px;"><b>※ 코스닥</b></mark>
+                    <mark class="bg-transparent text-center" style="font-family: 'Noto Sans KR', sans-serif;font-size :50px;"><b >※ 코스닥</b></mark>
                     <div id="kosdaq" class="d-flex flex-column mt-3">
-                        <table id="kosdaq-table" class="table table-dark table-hover table-striped table-bordered border-light align-middle">
+                        <table id="kosdaq-table" class="table table-hover table-striped table-bordered border-light align-middle" style="background-color:lightgreen">
                             <tbody>
                               <tr>
                                 <td>지수</td>
@@ -93,7 +93,7 @@
             </div>
         </div>
     <div class='row'>
-        <div class ="col bg-light text-center" id="exchange">
+        <div class ="col bg-white text-center" id="exchange">
         <table class="table table-responsive align-middle">
             <thead>환율</thead>
             <tbody>

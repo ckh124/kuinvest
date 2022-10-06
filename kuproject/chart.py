@@ -12,7 +12,7 @@ def chart_data(ent, select_date=None):
     else:
         e_date = datetime.now()
         s_date = e_date - timedelta(days=30)
-        print(f"s_date .................: {s_date}")
+        #print(f"s_date .................: {s_date}")
         ent_df = stock.get_market_ohlcv_by_date(fromdate=s_date, todate=e_date, ticker=ent)
     ent_df = ent_df.reset_index()
     ent_df = ent_df.drop(['시가', '고가', '저가', '거래량'], axis=1)
@@ -43,3 +43,8 @@ def search_code(name):
     temp = com_df_srch[(com_df_srch['한글 종목명'].str.contains(str)) | (com_df_srch['한글 종목명'].str.contains(str.upper()))][['yh_code', '한글 종목명']]
     #print(temp.values.tolist())
     return (temp.to_dict()['yh_code'].items())
+
+
+ent = search_code('삼성전자')
+tmp = chart_data(ent)
+print((int(list(tmp['ent_dict']['Close'].values())[-1]) - int(10000)) * int(5))
