@@ -81,11 +81,24 @@
                <tr>
                    <th>{{ data.0 }}</th>
                    <th>{{ data.1 }}</th>
-                   <th>{{ data.2 }}</th>
-                   <th>{{ data.3 }}</th>
+                   {% if data.3.0 == "+" %}
+                   <th style="color:red;">+{{ data.2 }}</th>
+                   <th style="color:red;">{{ data.3 }}</th>
+                   {% elif data.3.0 == "-" %}
+                   <th style="color:blue;'">-{{ data.2 }}</th>
+                   <th style="color:blue">{{ data.3 }}</th>
+                   {% endif %}
                    <th>{{ data.4 }}</th>
-                   <th>{{ data.5 }}</th>
-                   <th>{{ data.6 }}</th>
+                   {% if data.5.0 == "+" %}
+                   <th style="color:red;">{{ data.5 }}</th>
+                   {% elif data.5.0 == "-" %}
+                   <th style="color:blue;">{{ data.5 }}</th>
+                   {% endif %}
+                   {% if data.6.0 == "+" %}
+                   <th style="color:red;">{{ data.6 }}</th>
+                   {% elif data.6.0 == "-" %}
+                   <th style="color:blue;">{{ data.6 }}</th>
+                   {% endif %}
                    <th>{{ data.7 }}</th>
                    <th>{{ data.8 }}</th>
                </tr>

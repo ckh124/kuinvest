@@ -198,7 +198,7 @@ def test2(request):
                                               'var': var,
                                               'corp_name': request.GET['hidden_corp_name'],
                                               'ifrs': ifrs,
-                                              'invest': invest,})
+                                              'invest': invest, })
     if request.method == "POST":
         s_name = request.POST['fav']
         et = search_code(s_name)
