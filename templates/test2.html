@@ -54,16 +54,45 @@
     <div class ="col bg-white text-center mt-1"  id="ifrs_room">
         <mark class=" bg-transparent mt-1 text-center" style="font-family: 'Noto Sans KR', sans-serif;font-size : 50px;"><b>재무제표</b></mark>
 
-
-
                       {{ ifrs|safe }}
-
-
-
 
     <!---------->
     </div>
     </div>
+       <div>
+           <table>
+               <tbody>
+               <tr>
+                   <th rowspan="2">날짜</th>
+                   <th rowspan="2">종가</th>
+                   <th rowspan="2">전일비</th>
+                   <th rowspan="2">등락률</th>
+                   <th rowspan="2">거래량</th>
+                   <th >기관</th>
+                   <th colspan="3">외국인</th>
+               </tr>
+               <tr>
+                   <th>순매매량</th>
+                   <th>순매매량</th>
+                   <th>보유주수</th>
+                   <th>보유율</th>
+               </tr>
+               {% for data in invest %}
+               <tr>
+                   <th>{{ data.0 }}</th>
+                   <th>{{ data.1 }}</th>
+                   <th>{{ data.2 }}</th>
+                   <th>{{ data.3 }}</th>
+                   <th>{{ data.4 }}</th>
+                   <th>{{ data.5 }}</th>
+                   <th>{{ data.6 }}</th>
+                   <th>{{ data.7 }}</th>
+                   <th>{{ data.8 }}</th>
+               </tr>
+               {% endfor %}
+               </tbody>
+           </table>
+       </div>
     </div>
 {% endblock %}
 

@@ -8,11 +8,11 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.db import connection
 
 
-from kuproject.market import priceindex, exchange
-from kuproject.news import newscrawling
-from kuproject.chart import chart_data, search_code
-from kuproject.ifrs import crawl_ifrs
-from kuproject.models import user, stock_fav
+from kuproject.market import *
+from kuproject.news import *
+from kuproject.chart import *
+from kuproject.ifrs import *
+from kuproject.models import *
 
 from pykrx import stock
 import pandas as pd
@@ -188,6 +188,7 @@ def test2(request):
         y = list(s_data['ent_dict']['Close'].values())
         var = zip(x, y)
         ifrs = crawl_ifrs(s_code)
+        invest = tujaja(s_code)
         return render(request, 'test2.html', {'ent': s_data['ent'],
                                               'date': s_data['ent_dict']['Date'],
                                               'close': s_data['ent_dict']['Close'],
@@ -196,7 +197,8 @@ def test2(request):
                                               'color': s_data['ent_dict']['color'],
                                               'var': var,
                                               'corp_name': request.GET['hidden_corp_name'],
-                                              'ifrs': ifrs},)
+                                              'ifrs': ifrs,
+                                              'invest': invest,})
     if request.method == "POST":
         s_name = request.POST['fav']
         et = search_code(s_name)

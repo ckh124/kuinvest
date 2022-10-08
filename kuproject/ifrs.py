@@ -1,4 +1,6 @@
 import pandas as pd
+from bs4 import BeautifulSoup
+import requests
 
 def crawl_ifrs(s_code):
     ent = list(s_code)[0][1].split(".")[0]
@@ -36,3 +38,25 @@ def crawl_ifrs(s_code):
                         'class ="table table-hover table-responsive bg-transparent"')
 
     return (ifrs)
+
+def tujaja(stock_code):
+
+    gcode = str(stock_code)
+
+    url = "https://finance.naver.com/item/frgn.naver?code=005930"
+    headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36'}
+    req = requests.get(url, headers=headers)
+    html = BeautifulSoup(req.text, "html.parser")
+    html_table = html.select("table")
+
+    table = pd.read_html(str(html_table))
+
+    table = table[2]
+    data = table.dropna()
+
+    #data = data.values.tolist()
+
+    return data
+
+data = tujaja('005930')
+print(data.columns)
