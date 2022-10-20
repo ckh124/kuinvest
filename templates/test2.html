@@ -37,6 +37,11 @@
     </head>
        <div class="container">
     <div class="row">
+        <div>
+    {% for text in summary %}
+        <p>{{ text }}</p>
+    {% endfor %}
+    </div>
         <div class ="mt-1" >
     <form method="post" action = "{% url 'test2' %}">
         {% csrf_token %}
@@ -47,72 +52,84 @@
     <div id="curve_chart" style="height: 500px; align-content: center;"></div>
         </div>
     </div>
+        <a class="btn btn-outline-light" style ="font-family: 'Noto Sans KR', sans-serif;font-size : 20px;color:black;background-color:lightgreen;" href="{% url 'FS' %}" role="button">재무제표</a>
+        <a class="btn btn-outline-light" style ="font-family: 'Noto Sans KR', sans-serif;font-size : 20px;color:black;background-color:lightgreen;" href="{% url 'investor' %}" role="button">투자자</a>
 
-    <!--재무제표-->
-    <div class="row">
 
-    <div class ="col bg-white text-center mt-1"  id="ifrs_room">
-        <mark class=" bg-transparent mt-1 text-center" style="font-family: 'Noto Sans KR', sans-serif;font-size : 50px;"><b>재무제표</b></mark>
 
-                      {{ ifrs|safe }}
 
-    <!---------->
-    </div>
-    </div>
+<div class ="col-md-6 bg-white text-center mt-1" >
+
+
+
+    <table class="table table-hover table-responsive bg-transparent">
+    <thead>
+        <th style=" font-family: 'Noto Sans KR', sans-serif;font-size : 25px;"> {{ corp_name }} 관련 기사</th>
+    </thead>
+    <tbody>
+    {% for key, value in snews.items %}
+        <tr>
+            <td style=" font-family: 'Noto Sans KR', sans-serif;font-size : 16px;" ><a href = "{{ value }}" style="text-decoration-line: none;">{{ key }} </a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</div>
+
        <div>
-           <table>
-               <tbody>
-               <tr>
-                   <th rowspan="2">날짜</th>
-                   <th rowspan="2">종가</th>
-                   <th rowspan="2">전일비</th>
-                   <th rowspan="2">등락률</th>
-                   <th rowspan="2">거래량</th>
-                   <th >기관</th>
-                   <th colspan="3">외국인</th>
-               </tr>
-               <tr>
-                   <th>순매매량</th>
-                   <th>순매매량</th>
-                   <th>보유주수</th>
-                   <th>보유율</th>
-               </tr>
-               {% for data in invest %}
-               <tr>
-                   <th>{{ data.0 }}</th>
-                   <th>{{ data.1 }}</th>
-                   {% if data.3.0 == "+" %}
-                   <th style="color:red;">+{{ data.2 }}</th>
-                   <th style="color:red;">{{ data.3 }}</th>
-                   {% elif data.3.0 == "-" %}
-                   <th style="color:blue;'">-{{ data.2 }}</th>
-                   <th style="color:blue">{{ data.3 }}</th>
-                   {% else %}
-                   <th>{{ data.2 }}</th>
-                   <th>{{ data.3 }}</th>
-                   {% endif %}
-                   <th>{{ data.4 }}</th>
-                   {% if data.5.0 == "+" %}
-                   <th style="color:red;">{{ data.5 }}</th>
-                   {% elif data.5.0 == "-" %}
-                   <th style="color:blue;">{{ data.5 }}</th>
-                   {% else %}
-                   <th>{{ data.5 }}</th>
-                   {% endif %}
-                   {% if data.6.0 == "+" %}
-                   <th style="color:red;">{{ data.6 }}</th>
-                   {% elif data.6.0 == "-" %}
-                   <th style="color:blue;">{{ data.6 }}</th>
-                   {% else %}
-                   <th>{{ data.6 }}</th>
-                   {% endif %}
-                   <th>{{ data.7 }}</th>
-                   <th>{{ data.8 }}</th>
-               </tr>
-               {% endfor %}
-               </tbody>
-           </table>
-       </div>
-    </div>
+       {% if avg %}
+    <table class="table table-hover table-responsive bg-transparent">
+    <thead>
+        <th style=" font-family: 'Noto Sans KR', sans-serif;font-size : 25px;"> 증권사별 적정주가 & 투자의견 </th>
+    </thead>
+    <tbody>
+    <tr>
+        <th rowspan="2"> 추정기관 </th>
+        <th rowspan="2"> 추정날짜 </th>
+        <th colspan="3"> 적정주가 </th>
+        <th colspan="2"> 투자의견 </th>
+    </tr>
+    <tr>
+        <th> 적정주가 </th>
+        <th> 직전 적정주가 </th>
+        <th> 증감율 </th>
+        <th> 투자의견 </th>
+        <th> 직전 투자의견 </th>
+    </tr>
+    {% if avg %}
+        <tr>
+            <td>Consensus</td>
+            <td> &nbsp; </td>
+            <td>{{ avg.0 }}</td>
+            <td>{{ avg.1 }}</td>
+            <td>{{ avg.2 }}</td>
+            <td>{{ avg.3 }}</td>
+            <td>{{ avg.4 }}</td>
+        </tr>
+    {% endif %}
+    {% if inv %}
+    {% for items in inv.items %}
+        <tr>
+            <td>{{ items.1.0 }}</td>
+            <td>{{ items.1.1 }}</td>
+            <td>{{ items.1.2 }}</td>
+            <td>{{ items.1.3 }}</td>
+            <td>{{ items.1.4 }}</td>
+            <td>{{ items.1.5 }}</td>
+            <td>{{ items.1.6 }}</td>
+        </tr>
+    {% endfor %}
+    {% endif %}
+    </tbody>
+    </table>
+</div>
+           {% else %} 투자 의견이 없습니다.
+    {% endif %}
+{% block content3 %}
+
+
+
+{% endblock %}
+
 {% endblock %}
 

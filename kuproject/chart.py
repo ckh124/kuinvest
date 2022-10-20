@@ -44,7 +44,3 @@ def search_code(name):
     #print(temp.values.tolist())
     return (temp.to_dict()['yh_code'].items())
 
-
-ent = search_code('삼성전자')
-tmp = chart_data(ent)
-print((int(list(tmp['ent_dict']['Close'].values())[-1]) - int(10000)) * int(5))

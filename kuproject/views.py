@@ -22,7 +22,8 @@ from datetime import datetime, timedelta
 import plotly.graph_objects as go
 input_fav_buy = ""
 input_fav_sell = ""
-
+s_code =""
+corp_name=""
 def get(request):
     return render(request,'index.html')
 
@@ -61,7 +62,7 @@ def favorite(request):
         prate = None
         if data[3] is not None:
             profit = (int(list(tmp['ent_dict']['Close'].values())[-1]) - data[4]) * data[3]
-            prate = (profit / (data[3] * data[4])) * 100
+            prate = round((profit / (data[3] * data[4])) * 100, 2)
         row = {'id': data[0],
                'code': data[1],
                'name': data[2],
@@ -107,7 +108,10 @@ def alter(request):
         ocnt = data[0][1]
         print(oprice, ocnt)
 
-        if oprice is None:
+        if oprice == 0:
+            tprice = price
+            tcnt = cnt
+        elif oprice is None:
             tprice = price
             tcnt = cnt
         else:
@@ -144,9 +148,12 @@ def alter(request):
 
             if ocnt < cnt:
                 return render(request, 'alter_error.html')
-            else:
-                tprice = (oprice*ocnt - price*cnt)//(ocnt+cnt)
+            elif ocnt > cnt:
+                tprice = (oprice*ocnt - price*cnt)//(ocnt-cnt)
                 tcnt = ocnt-cnt
+            else:
+                tprice = "NULL"
+                tcnt = "NULL"
 
             sql2 = "update kuproject_stock_fav set price = " + str(tprice) + ", cnt = " + str(tcnt) + " where user_id = '" + request.session['u_id'] + "' and name = '" + input_fav_sell + "';"
             cursor.execute(sql2)
@@ -180,8 +187,11 @@ def test1(request):
 
 
 def test2(request):
+    global s_code
+    global Corp_name
     if request.method == "GET":
         s_code = search_code(request.GET['hidden_corp_name'])
+        Corp_name = request.GET['hidden_corp_name']
         s_data = chart_data(s_code, None)
         var = []
         x = list(s_data['ent_dict']['Date'].values())
@@ -189,6 +199,23 @@ def test2(request):
         var = zip(x, y)
         ifrs = crawl_ifrs(s_code)
         invest = tujaja(s_code)
+        snews = stock_news(s_code)
+        summ = summary(s_code)
+        inv_name, inv_date, target_prc, target_prc_bf, yoy, recom_cd, recom_cd_bf, avg = invest_opinion(s_code)
+        inv = {}
+        i = 0
+        for items in inv_name:
+            i += 1
+        for a in range(0, i):
+            tmp = []
+            tmp.append(inv_name[a])
+            tmp.append(inv_date[a])
+            tmp.append(target_prc[a])
+            tmp.append(target_prc_bf[a])
+            tmp.append(yoy[a])
+            tmp.append(recom_cd[a])
+            tmp.append(recom_cd_bf[a])
+            inv[a] = tmp
         return render(request, 'test2.html', {'ent': s_data['ent'],
                                               'date': s_data['ent_dict']['Date'],
                                               'close': s_data['ent_dict']['Close'],
@@ -196,9 +223,13 @@ def test2(request):
                                               'rate': s_data['ent_dict']['rate'],
                                               'color': s_data['ent_dict']['color'],
                                               'var': var,
-                                              'corp_name': request.GET['hidden_corp_name'],
+                                              'corp_name': Corp_name,
                                               'ifrs': ifrs,
-                                              'invest': invest, })
+                                              'invest': invest,
+                                              'snews': snews,
+                                              'summary': summ,
+                                              'inv': inv,
+                                              'avg': avg})
     if request.method == "POST":
         s_name = request.POST['fav']
         et = search_code(s_name)
@@ -270,3 +301,66 @@ def com_search_ajax(request):
 
 
      return HttpResponse(result)
+
+def FS(request):
+    if request.method == "GET":
+        global s_code
+        global Corp_name
+
+        s_data = chart_data(s_code, None)
+        var = []
+        x = list(s_data['ent_dict']['Date'].values())
+        y = list(s_data['ent_dict']['Close'].values())
+        var = zip(x, y)
+        ifrs = crawl_ifrs(s_code)
+        invest = tujaja(s_code)
+        return render(request, 'FS.html', {'ent': s_data['ent'],
+                                              'date': s_data['ent_dict']['Date'],
+                                              'close': s_data['ent_dict']['Close'],
+                                              'eve': s_data['ent_dict']['eve'],
+                                              'rate': s_data['ent_dict']['rate'],
+                                              'color': s_data['ent_dict']['color'],
+                                              'var': var,
+                                              'corp_name': Corp_name,
+                                              'ifrs': ifrs,
+                                              'invest': invest, })
+    if request.method == "POST":
+        s_name = request.POST['fav']
+        et = search_code(s_name)
+        s_code = list(et)[0][1].split(".")[0]
+        if stock_fav.objects.filter(code=s_code).exists():
+            return render(request, 'fav_exists.html')
+        stock_fav.objects.create(user_id=request.session['u_id'], code=s_code, name=s_name)
+        return render(request, 'fav_ok.html')
+
+
+def investor(request):
+    if request.method == "GET":
+        global s_code
+        global Corp_name
+
+        s_data = chart_data(s_code, None)
+        var = []
+        x = list(s_data['ent_dict']['Date'].values())
+        y = list(s_data['ent_dict']['Close'].values())
+        var = zip(x, y)
+        ifrs = crawl_ifrs(s_code)
+        invest = tujaja(s_code)
+        return render(request, 'investor.html', {'ent': s_data['ent'],
+                                           'date': s_data['ent_dict']['Date'],
+                                           'close': s_data['ent_dict']['Close'],
+                                           'eve': s_data['ent_dict']['eve'],
+                                           'rate': s_data['ent_dict']['rate'],
+                                           'color': s_data['ent_dict']['color'],
+                                           'var': var,
+                                           'corp_name': Corp_name,
+                                           'ifrs': ifrs,
+                                           'invest': invest, })
+    if request.method == "POST":
+        s_name = request.POST['fav']
+        et = search_code(s_name)
+        s_code = list(et)[0][1].split(".")[0]
+        if stock_fav.objects.filter(code=s_code).exists():
+            return render(request, 'fav_exists.html')
+        stock_fav.objects.create(user_id=request.session['u_id'], code=s_code, name=s_name)
+        return render(request, 'fav_ok.html')
