@@ -1,3 +1,4 @@
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
@@ -39,7 +40,7 @@ def stock_news(stock_code):
     gcode = list(stock_code)[0][1].split(".")[0]
     url = 'https://finance.naver.com'
     headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36'}
-    req = requests.get(url+'/item/news.naver?code='+gcode, headers = headers)
+    req = requests.get(url+'/item/news.naver?code='+gcode, headers=headers)
     soup = BeautifulSoup(req.text, 'html.parser')
     iframe = soup.find('iframe', id='news_frame')
 
@@ -72,3 +73,30 @@ def stock_news(stock_code):
     news = dict(zip(news_title, news_link))
 
     return news
+
+def disclosure(stock_code):
+    gcode = list(stock_code)[0][1].split(".")[0]
+    url = 'https://finance.naver.com'
+    headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36'}
+
+    gs_link = []
+    gs_title = []
+    gs_info = []
+    gs_date = []
+
+    for page in range(1, 3):
+        req = requests.get(url + '/item/news_notice.naver?code=' + gcode + '&page=' + str(page), headers=headers)
+        soup = BeautifulSoup(req.text, 'lxml')
+        div = soup.find_all('td', 'title')
+        inf = soup.find_all('td', 'info')
+        date = soup.find_all('td', 'date')
+        for item in div:
+            gs_title.append(item.get_text())
+            gs_link.append(url + (item.find("a")["href"]))
+        for item in inf:
+            gs_info.append(item.get_text())
+        for item in date:
+            gs_date.append(item.get_text())
+
+    return gs_title, gs_link, gs_info, gs_date
+

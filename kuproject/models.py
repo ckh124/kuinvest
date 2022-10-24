@@ -9,7 +9,23 @@ class user(models.Model):
 
 class stock_fav(models.Model):
     user_id = models.CharField(max_length=20)
-    code = models.FloatField()
+    code = models.IntegerField(max_length=6)
     name = models.CharField(max_length=45)
     cnt = models.IntegerField()
     price = models.IntegerField()
+
+
+class stock_comm(models.Model):
+    user_id = models.CharField(max_length=20)
+    created_at = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=100)
+    context = models.TextField()
+    code = models.IntegerField(max_length=6)
+    name = models.CharField(max_length=45)
+
+
+class community(models.Model):
+    user_id = models.CharField(max_length=20)
+    created_at = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=100)
+    context = models.TextField()

@@ -216,6 +216,17 @@ def test2(request):
             tmp.append(recom_cd[a])
             tmp.append(recom_cd_bf[a])
             inv[a] = tmp
+
+        gs_title, gs_link, gs_info, gs_date = disclosure(s_code)
+        gs = {}
+        for i in range(0, len(gs_title)):
+            tmp = []
+            tmp.append(gs_link[i])
+            tmp.append(gs_title[i])
+            tmp.append(gs_info[i])
+            tmp.append(gs_date[i])
+            gs[i] = tmp
+
         return render(request, 'test2.html', {'ent': s_data['ent'],
                                               'date': s_data['ent_dict']['Date'],
                                               'close': s_data['ent_dict']['Close'],
@@ -229,7 +240,8 @@ def test2(request):
                                               'snews': snews,
                                               'summary': summ,
                                               'inv': inv,
-                                              'avg': avg})
+                                              'avg': avg,
+                                              'gs': gs})
     if request.method == "POST":
         s_name = request.POST['fav']
         et = search_code(s_name)

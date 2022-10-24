@@ -122,9 +122,35 @@
     {% endif %}
     </tbody>
     </table>
-</div>
            {% else %} 투자 의견이 없습니다.
     {% endif %}
+    </div>
+
+
+<div>
+       {% if gs %}
+    <table class="table table-hover table-responsive bg-transparent">
+    <thead>
+        <th style=" font-family: 'Noto Sans KR', sans-serif;font-size : 25px;"> 공시정보 </th>
+    </thead>
+    <tbody>
+    <tr>
+        <th > 제목 </th>
+        <th > 정보제공 </th>
+        <th > 날짜 </th>
+    </tr>
+    {% for item in gs.items %}
+    <tr>
+        <td><a href = "{{ item.1.0 }}">{{ item.1.1 }}</a></td>
+        <td>{{ item.1.2 }}</td>
+        <td>{{ item.1.3 }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+       {% else %} 투자 의견이 없습니다.
+        {% endif %}
+    </div>
 {% block content3 %}
 
 

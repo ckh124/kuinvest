@@ -122,28 +122,17 @@ def invest_opinion(stock_code):
         except:
             break
 
-    try:
-        avg.append(bc[0].split('"')[37])
-        avg.append(bc[0].split('"')[41])
-        nums = 0.0
-        t = 0.0
-        for num in yoy:
-            try:
-                if num[0] == '-':
-                    num = 0 - float(nums[1:])
-                else:
-                    num = float(nums)
-            except:
-                break
-            nums = nums + num
-            t += 1
-        nums = nums / t
-        avg_num = round(nums, 2)
-        avg.append(avg_num)
-        avg.append(bc[0].split('"')[45])
-        avg.append(bc[0].split('"')[49])
-    except:
-        None
+    recom = bc[0].split('"')[37]
+    recom_bf = bc[0].split('"')[41]
+    avg.append(recom)
+    avg.append(recom_bf)
+    recom_float = float(recom.replace(",", ""))
+    recom_bf_float = float(recom_bf.replace(",", ""))
+    avg_num = round(((recom_float - recom_bf_float) / recom_bf_float * 100), 2)
+    avg.append(avg_num)
+    avg.append(bc[0].split('"')[45])
+    avg.append(bc[0].split('"')[49])
+
 
     return name, date, target_prc, target_prc_bf, yoy, recom_cd, recom_cd_bf, avg
 
