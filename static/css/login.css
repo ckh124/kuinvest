@@ -9,8 +9,7 @@ body{
     align-items: center;
     height: 100vh;
 
-    background: url("https://blog.kakaocdn.net/dn/G0iTv/btqFpBtY56Z/Rx1eTWKvRN7Bh0Uakw3miK/img.gif") no-repeat center;
-    background-size: cover;
+
 
     font-size: 20px;color:#fff;
 
@@ -85,4 +84,16 @@ body::before{
 .caption a{
     font-size: 15px; color:#999;
 
+}
+.time{
+    font-size: 100px;
+    color : green;
+    font-family: 'Nanum Gothic', sans-serif;
+    text-align: center;
+}
+.date{
+    font-size: 20px;
+    font-family: 'Nanum Gothic', sans-serif;
+    color : green;
+    text-align: center;
 }

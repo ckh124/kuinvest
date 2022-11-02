@@ -3,13 +3,15 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <title>Test</title>
+    <title>Stock Info</title>
     <link rel="stylesheet" href="{% static 'css/login.css' %}" />
     <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
   </head>
   <body>
     <section class="login">
-      <h1>KU</h1>
+
+        <div id="time" class="time"></div>
+      <h1>Stock Info</h1>
       <form METHOD="post" ACTION="{% url 'login' %}">
           {% csrf_token %}
         <div class="int-area">
@@ -36,7 +38,11 @@
         <div class="caption">
           <a href="{% url 'register' %}">비밀번호를 잊으셨나요?</a>
         </div>
+
+
     </section>
+
+    </div>
 
     <script>
       let id = $("#id");
@@ -57,5 +63,35 @@
         }
       });
     </script>
+      <hr />
+
+        <div id="date" class="relative-bottom;"></div>
   </body>
+        <script>
+            function setClock(){
+
+
+            var dateInfo = new Date();
+            var hour = modifyNumber(dateInfo.getHours());
+            var min = modifyNumber(dateInfo.getMinutes());
+            var sec = modifyNumber(dateInfo.getSeconds());
+            var year = dateInfo.getFullYear();
+            var month = dateInfo.getMonth()+1;
+            var date = dateInfo.getDate();
+            document.getElementById("time").innerHTML = hour + ":" + min + ":" + sec;
+            document.getElementById("date").innerHTML = year+ "년" +month + "월" + date + "일";
+            }
+            function modifyNumber(time){
+                if(parseInt(time)<10){
+                    return "0" + time;
+                }
+                else
+                    return time;
+            }
+            window.onload = function(){
+                setClock();
+                setInterval(setClock,1000);
+            }
+        </script>
+
 </html>

@@ -1,19 +1,18 @@
 body{
-    background-color : aliceblue;
+    background-color : white;
     height : 100%;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Nanum Gothic', sans-serif;
+
 
 }
 
 nav{
     font-family: 'Noto Sans KR', sans-serif;
-    font-size : 24px;
+    font-size : 12px;
+    background: lightgreen;
 }
 
-div {
-    border-radius: 5%;
 
-}
 
 table{
     font-family: 'Noto Sans KR', sans-serif;
@@ -25,5 +24,15 @@ table{
 b{
     font-family: 'Noto Sans KR', sans-serif;
     font-size : 20px;
+
+}
+.a{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size : 20px;
+    color:white;
+}
+active
+{
+    color:white;
 
 }

@@ -1,35 +1,40 @@
 {% extends "index.html" %}
 
 {% block content %}
+<h1>
+<nav class="navbar navbar-expand-lg navbar-light " >
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'main'%}" id="maintext">Stock Info</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
+        <li class="nav-item" >
+          <a class="nav-link" href="{% url 'favorite' %}"style="font-family: 'Nanum Gothic', sans-serif;font-size : 25px;">관심그룹</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href ="{% url 'nowstock' %}"style="font-family: 'Nanum Gothic', sans-serif;font-size : 25px; color:antiquewhite;">종목 검색</a>
+        </li>
+          <li class="nav-item">
+          <a class="nav-link" href="{% url 'board' %}"style="font-family: 'Nanum Gothic', sans-serif;font-size : 25px;" >토론방</a>
+        </li>
+
+      </ul>
+      <form class="d-flex">
+
+        <a class="btn btn-danger" href="{% url 'login' %}" role="button">로그아웃</a>
+      </form>
+    </div>
+  </div>
+</nav>
+</h1>
   <body class="nav-md" id="jamybody">
     <div class="container body">
       <div class="main_container" style="margin-left:0px">
 
-        <!-- top navigation -->
-        <div class="top_nav" style="margin-left:0px">
-          <div class="nav_menu">
-            <nav>
-              <div class="nav toggle" style="margin-bottom:0px; padding-top:18px;width: 50px;">
-                <a href="/" id="menu_toggle"><i class="fa fa-home"><h4><b></b></h4></i></a>
-              </div>
 
-              <div class="input-group">
-              <ul class="nav navbar-nav navbar-right" style="margin-top:20px;>
-                <li class="">
-
-                  <ul class="dropdown-menu dropdown-usermenu pull-right">
-
-
-                  </ul>
-                </li>
-
-
-              </ul>
-            </nav>
-          </div>
-        </div>
-        <!-- /top navigation -->
 
         <!-- page content -->
         <div id='searchman' class="right_col" role="main" style="margin-left:0px">

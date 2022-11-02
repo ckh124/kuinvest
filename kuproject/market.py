@@ -48,6 +48,3 @@ def exchange():
 
     return n, p
 
-
-
-

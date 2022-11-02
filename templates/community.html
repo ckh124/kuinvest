@@ -1,0 +1,33 @@
+{% extends "test2.html" %}
+
+{% block content3 %}
+    <div>
+    {% if data %}
+    <table class="table table-hover table-responsive bg-transparent">
+        <thead>
+            <th colspan="3" style=" font-family: 'Noto Sans KR', sans-serif;font-size : 25px;"> {{ corp_name }} 토론방 </th>
+        </thead>
+            <tr>
+                <th width = "200"> 날짜 </th>
+                <th width = "800"> 제목 </th>
+                <th> 작성자 </th>
+                <th> 댓글 </th>
+            </tr>
+            {% for item in data %}
+            <tr onclick="location.href=('detail/{{ item.0 }}')">
+                <th> {{ item.2|date:"Y-m-d H:i:s" }} </th>
+                <th> {{ item.3 }} </th>
+                <th> {{ item.1 }} </th>
+                <th> {{ item.7 }} </th>
+            </tr>
+            {% endfor %}
+    </table>
+    {% else %}
+
+            <h2>게시글이 없습니다.</h2>
+
+    {% endif %}
+    <a target='_blank' class="btn btn-outline-light" style ="font-family: 'Noto Sans KR', sans-serif;font-size : 9px;color:black;background-color:lightgreen;" href="{% url 'write' %}" role="button">글쓰기</a>
+    </div>
+
+{% endblock %}

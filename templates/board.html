@@ -1,0 +1,67 @@
+{% extends "index.html" %}
+
+{% block content %}
+<h1>
+<nav class="navbar navbar-expand-lg navbar-light " >
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'main'%}" id="maintext">Stock Info</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        <li class="nav-item" >
+          <a class="nav-link active" href="{% url 'favorite' %}"style="font-family: 'Nanum Gothic', sans-serif;font-size : 25px;">관심그룹</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'nowstock' %}"style="font-family: 'Nanum Gothic', sans-serif;font-size : 25px;">종목 검색</a>
+        </li>
+          <li class="nav-item">
+          <a class="nav-link" href="{% url 'board' %}" style="font-family: 'Nanum Gothic', sans-serif;font-size : 25px;color:antiquewhite;" >토론방</a>
+        </li>
+
+      </ul>
+      <form class="d-flex">
+
+        <a class="btn btn-danger" href="{% url 'login' %}" role="button">로그아웃</a>
+      </form>
+    </div>
+  </div>
+</nav>
+</h1>
+
+
+<body>
+<div class="row mt-5">
+    <div class="col-12">
+        <table class="table table-light">
+            <thead class="thead-light text-dark">
+                <tr>
+                    <th>제목</th>
+                    <th>아이디</th>
+                    <th>날짜</th>
+                    <th>조회수</th>
+                </tr>
+            </thead>
+            {% for board in data %}
+            <tbody class="text-dark">
+                <tr onclick="location.href='{% url 'board_detail' pk=board.0 %}'">
+                    <th>{{ board.3 }} <font color="#f84b71">[{{ board.5 }}]</font></th>
+                    <td>{{ board.1 }}</td>
+                    <td>{{ board.2 }}</td>
+                    <td>{{ board.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <button class="btn btn-primary" onclick="location.href='{% url 'board_write' %}'">글쓰기</button>
+    </div>
+</div>
+</body>
+{% endblock %}
+
